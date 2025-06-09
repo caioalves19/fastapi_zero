@@ -16,8 +16,6 @@ def test_create_user(session, mock_db_time):
         session.add(new_user)
         session.commit()
 
-        print(new_user)
-
         user = session.scalar(
             select(User).where(User.username == "Caio Alves")
         )
@@ -28,4 +26,5 @@ def test_create_user(session, mock_db_time):
             "email": "teste@gmail.com",
             "password": "teste",
             "created_at": time,
+            "updated_at": time,
         }

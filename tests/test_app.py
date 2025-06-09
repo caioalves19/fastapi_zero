@@ -12,7 +12,7 @@ def test_create_user(client):
     response = client.post(
         "/users",
         json={
-            "user": "caioalves",
+            "username": "caioalves",
             "email": "caio@example.com",
             "password": "password",
         },
@@ -21,12 +21,12 @@ def test_create_user(client):
     assert response.status_code == HTTPStatus.CREATED
     assert response.json() == {
         "id": 1,
-        "user": "caioalves",
+        "username": "caioalves",
         "email": "caio@example.com",
     }
 
 
-def test_read_users(client):
+def test_get_users(client):
     response = client.get("/users")
 
     assert response.status_code == HTTPStatus.OK
@@ -34,10 +34,21 @@ def test_read_users(client):
         "users": [
             {
                 "id": 1,
-                "user": "caioalves",
+                "username": "caioalves",
                 "email": "caio@example.com",
             }
         ]
+    }
+
+
+def test_get_user_by_id(client):
+    response = client.get("/users/1")
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {
+        "id": 1,
+        "username": "caioalves",
+        "email": "caio@example.com",
     }
 
 
@@ -45,7 +56,7 @@ def test_update_user(client):
     response = client.put(
         "/users/1",
         json={
-            "user": "cr7",
+            "username": "cr7",
             "email": "cr7@example.com",
             "password": "password",
         },
@@ -54,7 +65,7 @@ def test_update_user(client):
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         "id": 1,
-        "user": "cr7",
+        "username": "cr7",
         "email": "cr7@example.com",
     }
 
@@ -63,7 +74,7 @@ def test_update_user_exception(client):
     response = client.put(
         "/users/2",
         json={
-            "user": "cr7",
+            "username": "cr7",
             "email": "cr7@example.com",
             "password": "password",
         },
@@ -79,13 +90,13 @@ def test_delete_user(client):
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         "id": 1,
-        "user": "cr7",
+        "username": "cr7",
         "email": "cr7@example.com",
     }
 
 
 def test_delete_user_exception(client):
     response = client.delete("/users/2")
-    
+
     assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json() == {"detail": "Não encontrado!"}

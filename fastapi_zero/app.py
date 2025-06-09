@@ -29,7 +29,7 @@ def read_users():
 )
 def create_user(user: UserSchema):
     user_with_id = UserDBSchema(
-        user=user.user,
+        username=user.username,
         email=user.email,
         password=user.password,
         id=len(database) + 1,
@@ -69,6 +69,11 @@ def delete_user(user_id: int):
     del database[user_id - 1]
     return user_deleted
 
-@app.get("/users/{user_id}", status_code=HTTPStatus.OK, response_model=UserPublicSchema)
-def get_user_by_id(user_id : int):
+
+@app.get(
+    "/users/{user_id}",
+    status_code=HTTPStatus.OK,
+    response_model=UserPublicSchema,
+)
+def get_user_by_id(user_id: int):
     return database[user_id - 1]
